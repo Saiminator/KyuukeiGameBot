@@ -1,0 +1,329 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(220, 13%, 18%);
+  --foreground: hsl(220, 9%, 46%);
+  --card: hsl(220, 13%, 22%);
+  --card-foreground: hsl(0, 0%, 95%);
+  --popover: hsl(220, 13%, 18%);
+  --popover-foreground: hsl(0, 0%, 95%);
+  --primary: hsl(235, 86%, 65%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --secondary: hsl(180, 84%, 33%);
+  --secondary-foreground: hsl(0, 0%, 100%);
+  --muted: hsl(220, 13%, 26%);
+  --muted-foreground: hsl(220, 9%, 46%);
+  --accent: hsl(275, 100%, 75%);
+  --accent-foreground: hsl(0, 0%, 100%);
+  --destructive: hsl(0, 84%, 60%);
+  --destructive-foreground: hsl(0, 0%, 100%);
+  --border: hsl(220, 13%, 26%);
+  --input: hsl(220, 13%, 26%);
+  --ring: hsl(235, 86%, 65%);
+  --chart-1: hsl(235, 86%, 65%);
+  --chart-2: hsl(180, 84%, 33%);
+  --chart-3: hsl(275, 100%, 75%);
+  --chart-4: hsl(0, 84%, 60%);
+  --chart-5: hsl(42, 93%, 56%);
+  --sidebar: hsl(220, 13%, 22%);
+  --sidebar-foreground: hsl(0, 0%, 95%);
+  --sidebar-primary: hsl(235, 86%, 65%);
+  --sidebar-primary-foreground: hsl(0, 0%, 100%);
+  --sidebar-accent: hsl(220, 13%, 26%);
+  --sidebar-accent-foreground: hsl(275, 100%, 75%);
+  --sidebar-border: hsl(220, 13%, 26%);
+  --sidebar-ring: hsl(235, 86%, 65%);
+  --font-sans: Whitney, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-serif: Georgia, serif;
+  --font-mono: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace;
+  --radius: 0.5rem;
+  --shadow-2xs: 0px 1px 2px 0px hsl(235 86% 65% / 0.05);
+  --shadow-xs: 0px 1px 2px 0px hsl(235 86% 65% / 0.05);
+  --shadow-sm: 0px 1px 2px 0px hsl(235 86% 65% / 0.05), 0px 1px 3px -1px hsl(235 86% 65% / 0.1);
+  --shadow: 0px 1px 3px 0px hsl(235 86% 65% / 0.1), 0px 1px 2px -1px hsl(235 86% 65% / 0.1);
+  --shadow-md: 0px 4px 6px -1px hsl(235 86% 65% / 0.1), 0px 2px 4px -2px hsl(235 86% 65% / 0.1);
+  --shadow-lg: 0px 10px 15px -3px hsl(235 86% 65% / 0.1), 0px 4px 6px -4px hsl(235 86% 65% / 0.1);
+  --shadow-xl: 0px 20px 25px -5px hsl(235 86% 65% / 0.1), 0px 8px 10px -6px hsl(235 86% 65% / 0.1);
+  --shadow-2xl: 0px 25px 50px -12px hsl(235 86% 65% / 0.25);
+  --tracking-normal: 0em;
+  --spacing: 0.25rem;
+}
+
+.dark {
+  --background: hsl(220, 13%, 18%);
+  --foreground: hsl(220, 9%, 46%);
+  --card: hsl(220, 13%, 22%);
+  --card-foreground: hsl(0, 0%, 95%);
+  --popover: hsl(220, 13%, 18%);
+  --popover-foreground: hsl(0, 0%, 95%);
+  --primary: hsl(235, 86%, 65%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --secondary: hsl(180, 84%, 33%);
+  --secondary-foreground: hsl(0, 0%, 100%);
+  --muted: hsl(220, 13%, 26%);
+  --muted-foreground: hsl(220, 9%, 46%);
+  --accent: hsl(275, 100%, 75%);
+  --accent-foreground: hsl(0, 0%, 100%);
+  --destructive: hsl(0, 84%, 60%);
+  --destructive-foreground: hsl(0, 0%, 100%);
+  --border: hsl(220, 13%, 26%);
+  --input: hsl(220, 13%, 26%);
+  --ring: hsl(235, 86%, 65%);
+}
+
+/* Discord-style Tier Badges */
+.tier-d { 
+  @apply bg-red-600 text-red-50; 
+}
+
+.tier-c { 
+  @apply bg-orange-500 text-orange-50; 
+}
+
+.tier-b { 
+  @apply bg-yellow-500 text-yellow-50; 
+}
+
+.tier-a { 
+  @apply bg-green-500 text-green-50; 
+}
+
+.tier-s { 
+  @apply bg-gradient-to-r from-yellow-400 to-yellow-600 text-yellow-50; 
+}
+
+/* Discord Embed Style */
+.discord-embed {
+  border-left: 4px solid hsl(var(--primary));
+}
+
+/* Regeneration Effect Animation */
+.regen-pulse {
+  animation: regen-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes regen-glow {
+  0% { 
+    box-shadow: 0 0 5px hsl(var(--secondary)); 
+  }
+  100% { 
+    box-shadow: 0 0 20px hsl(var(--secondary)), 0 0 30px hsl(var(--secondary)); 
+  }
+}
+
+/* Stat Progress Bars */
+.stat-bar {
+  background: linear-gradient(90deg, 
+    hsl(var(--primary)) 0%, 
+    hsl(var(--primary)) var(--fill-percent, 0%), 
+    hsl(var(--muted)) var(--fill-percent, 0%), 
+    hsl(var(--muted)) 100%);
+}
+
+/* Custom scrollbar for Discord-like feel */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--accent));
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    font-family: var(--font-sans);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold;
+  }
+
+  code {
+    @apply relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm;
+  }
+}
+
+@layer components {
+  /* Button hover effects matching Discord style */
+  .btn-discord {
+    @apply transition-colors duration-200 ease-in-out;
+  }
+
+  .btn-discord:hover {
+    @apply opacity-80;
+  }
+
+  /* Card animations */
+  .card-hover {
+    @apply transition-all duration-200 ease-in-out;
+  }
+
+  .card-hover:hover {
+    @apply shadow-lg transform scale-[1.02];
+  }
+
+  /* Character card specific styles */
+  .character-card {
+    @apply relative overflow-hidden;
+  }
+
+  .character-card::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-br from-transparent to-primary/5 opacity-0 transition-opacity duration-300;
+  }
+
+  .character-card:hover::before {
+    @apply opacity-100;
+  }
+
+  /* Training option styles */
+  .training-option {
+    @apply relative overflow-hidden border transition-all duration-200;
+  }
+
+  .training-option:hover {
+    @apply border-primary/50 shadow-md;
+  }
+
+  .training-option.event {
+    @apply border-accent border-opacity-50;
+  }
+
+  .training-option.event:hover {
+    @apply border-accent shadow-lg;
+  }
+
+  /* PvP specific styles */
+  .pvp-winner {
+    @apply border-secondary border-2 bg-secondary/5;
+  }
+
+  .pvp-loser {
+    @apply border-destructive/50 bg-destructive/5;
+  }
+
+  .pvp-draw {
+    @apply border-muted bg-muted/5;
+  }
+
+  /* Status indicators */
+  .status-online {
+    @apply w-3 h-3 rounded-full bg-secondary animate-pulse;
+  }
+
+  .status-offline {
+    @apply w-3 h-3 rounded-full bg-destructive;
+  }
+
+  /* Tier-specific glows */
+  .tier-s-glow {
+    @apply shadow-lg shadow-yellow-400/25;
+  }
+
+  .tier-a-glow {
+    @apply shadow-lg shadow-green-400/25;
+  }
+
+  .tier-b-glow {
+    @apply shadow-lg shadow-yellow-400/20;
+  }
+}
+
+@layer utilities {
+  /* Text utilities for Discord-like typography */
+  .text-discord-primary {
+    color: hsl(var(--primary));
+  }
+
+  .text-discord-secondary {
+    color: hsl(var(--secondary));
+  }
+
+  .text-discord-accent {
+    color: hsl(var(--accent));
+  }
+
+  /* Background utilities */
+  .bg-discord-dark {
+    background-color: hsl(var(--background));
+  }
+
+  .bg-discord-card {
+    background-color: hsl(var(--card));
+  }
+
+  /* Border utilities */
+  .border-discord {
+    border-color: hsl(var(--border));
+  }
+
+  /* Animation utilities */
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes glow {
+    from {
+      box-shadow: 0 0 5px hsl(var(--primary));
+    }
+    to {
+      box-shadow: 0 0 20px hsl(var(--primary)), 0 0 30px hsl(var(--primary));
+    }
+  }
+
+  /* Font utilities */
+  .font-discord {
+    font-family: var(--font-sans);
+  }
+
+  .font-mono-discord {
+    font-family: var(--font-mono);
+  }
+
+  /* Layout utilities for Discord-like spacing */
+  .space-discord {
+    gap: var(--spacing);
+  }
+
+  /* Interactive states */
+  .interactive-hover {
+    @apply transition-all duration-200 ease-in-out cursor-pointer;
+  }
+
+  .interactive-hover:hover {
+    @apply opacity-80 transform scale-[1.02];
+  }
+
+  .interactive-active {
+    @apply transform scale-[0.98];
+  }
+
+  /* Character-specific color schemes */
+  .kyuu-theme {
+    @apply border-secondary/30 bg-secondary/5;
+  }
+
+  .shimi-theme {
+    @apply border-primary/30 bg-primary/5;
+  }
+
+  .dreymi-theme {
+    @apply border-accent/30 bg-accent/5;
+  }
+}

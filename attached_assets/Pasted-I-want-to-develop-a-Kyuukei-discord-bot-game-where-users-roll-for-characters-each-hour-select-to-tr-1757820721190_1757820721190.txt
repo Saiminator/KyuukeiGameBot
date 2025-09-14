@@ -1,0 +1,230 @@
+I want to develop a Kyuukei discord bot game where users roll for characters each hour, select to train one of them in dms and go through a whole choose your adventure/training game until the character is "finished" and then their stats, abilities, items/equipment, and all relevent data is saved and stored to their user ID to be used in other events or pvp. here is the whole game plan, i want you to help me code the entire thing.
+
+1) Vision & Pillars
+
+Collect → Train → Lock → Battle. Players roll character seeds, train in DMs, then lock a finished profile for future PvP.
+
+Lore-true but gamey. Systems feel like Kyuukei (unique powers, counters) while remaining simple, fair, and repeatable.
+
+Data-driven content. New trainings, events, items, and quests are added as blocks with weights and simple conditions.
+
+2) Core Stats (8)
+
+Str, Agi, Sta, Mag, Wit, Wil, Cha, Luk
+(strength, agility, stamina, magic, wits, will, charisma, luck)
+
+Sta primarily drives survivability/HP.
+
+Wit = precision/ability control.
+
+Wil = mental resistance/resolve.
+
+Luk = small swing factor across checks.
+
+3) Hourly Rolls (Server or DM)
+
+Cooldown: 1 roll batch per user per hour.
+
+Batch Size: 5–10 candidates (configurable).
+
+Per-Stat Roll: Each stat rolls a % in [70–115].
+
+COTD bonus (rolling only): If the candidate’s character is Character of the Day, add +10 percentage points per stat before applying to base stats, capped at 115% per stat.
+
+Final Tier (cosmetic): Compute the average of the 8 post-boost % values:
+
+D: 70–79, C: 80–89, B: 90–99, A: 100–109, S: 110–115.
+
+(A roll on COTD often crosses into S due to +10pp.)
+
+Choose 1 candidate to start training; Trash All discards the batch.
+
+4) Run & Training (DMs)
+
+Run start: Choosing a candidate moves the session to DMs; all training occurs there.
+
+Turn cadence: Each “day/turn” presents 3 options:
+
+Regular Training (default): label + expected stat focus; no pre-choice flair.
+
+Event (rarer): includes pre-choice flavor text in the menu and special outcomes (rewards/risks).
+
+Event Frequency (recommended default):
+
+70%: 0 events, 25%: 1 event, 5%: 2 events among the three options.
+
+Pity: if a player has gone 5 days without an event, guarantee ≥1 event next day.
+
+Selection rules: Owner-only clicks; options drawn by weighted sampling with guardrails (avoid repeating the same primary tag back-to-back if configured).
+
+Outcomes: Apply stat gains (scaled by character growth weights), flags, items, coins, story progress, injuries/heal, or open shop.
+
+Save point: Autosave after EVERY step (before and after effects).
+
+Run length: Configurable (e.g., up to 14 days), or early completion via events/quests.
+
+Finish: On completion, the run is locked into a permanent Card in the user’s collection.
+
+Training COTD: By default, no extra training bonus—only rolling gets +10pp. (You can enable a small training boost later if desired.)
+
+5) Content Blocks (Data-Driven)
+
+All authored as blocks with:
+
+ID, label, kind (training or event), weight, optional primary_tag for diversity.
+
+Eligibility: requires / excludes conditions (flags, day, story stage, items, character, etc.).
+
+Effects: stat ranges, coins, flags set/unset, story flag advances, injuries/heal, unlocks, open store, grant item.
+
+Flair:
+
+Event blocks show pre-choice flair in the menu.
+
+Both can show post-result flair after selection.
+
+Quests are multi-stage event chains keyed by story flags (each stage is just another block).
+
+6) Shops & Items
+
+Shop access: Per-character toggle (e.g., some can’t shop; others can).
+
+Shops: Label + inventory (price, stock per run/global, requirements, who can see/buy).
+
+Items: Name, description, tags, restrictions (which characters can use), PvP effects (e.g., bonus to seal checks, anti-regen finisher), and whether obtainable via shop or only via quest/event.
+
+Currency: Coins (simple, optional). Earned via trainings/events; spent in shops.
+
+7) Locking & Collection
+
+Lock occurs automatically at run end (or manually if allowed).
+
+Card stores: final stats, items, flags/unlocks relevant for PvP, season ID, cosmetic tier (from average %), and provenance (COTD used, etc.).
+
+Collection: Players can view their locked cards and select one for PvP.
+
+8) PvP (Auto-Resolved, One Pass)
+
+Selection: /pvp @opponent my:<card_id> vs:<their_card_id>
+
+Working snapshot: Copy card stats; apply item/unlock modifiers and any season rules. (COTD does not alter PvP unless you later add a small perk.)
+
+Resolution model: Short, deterministic sequence of contested checks using a simple rule:
+
+Opposed chance: A vs B → A / (A + B) (clean, intuitively fair).
+
+Sequence structure (recommended):
+
+Initiative: Agi vs Agi → acting order (minor flinch chance on large margin).
+
+Ability pass: Evaluate each character’s unique power once (or as specified).
+
+Damage exchange: 1–2 quick exchanges (Str/Mag vs Agi/Sta) with caps to prevent one-shots.
+
+Win checks: KO, Transform/Capture/Seal, Charm Lock, or Draw.
+
+Narration: The engine outputs immutable battle facts (winner, key passes/fails, % rolls, items used). Feed those to an AI only for flavor text; it cannot alter the outcome.
+
+Signature Ability Templates (lore-true, simple gates)
+
+Shimi — Transform (instant-win path, multi-gate):
+Approach (Agi+Wit) → Grapple (Str+Agi) → Overwrite (Wit+Mag) → Anti-flinch (foe Agi vs Shimi Agi) → Will (Wil+Wit).
+Success at the final Will gate = win; failures continue the fight. Items like Sealing Threads add resist pp to Will or boost anti-transform defenses.
+
+Kyuu — Regen + Seal-Gated Defeat:
+Regenerates each sequence. To truly defeat Kyuu, opponents must succeed at Seal (Wit+Mag vs Wit+Wil) or Contain (Str+Wit vs Str+Agi) or use an Anti-Regen Finisher. Otherwise, KO can stall to Draw.
+
+Dreymi — Charm/Drain Snowball:
+Charm (Cha vs Wil) applies debuffs; Drain heals on hit. If debuff stacks peak and she wins a Wit vs Wil lock check, she Dominates (win).
+
+(Add others similarly: Pon = copy a buff/ability window; Sera = occasional double-action via Agi+Wit; Memo = mana drain scaling off Wit.)
+
+9) Balance & Tuning Knobs
+
+Roll bands (70–115), COTD +10pp, stat cap (e.g., 999).
+
+Event mix (0/1/2) + pity window.
+
+Training growth weights per character (how efficiently a stat grows).
+
+Ability gate weights (e.g., Transform Will gate threshold).
+
+Damage caps (per exchange cap) and sequence length (to avoid marathons).
+
+Item effects (e.g., +seal %, +Will pp, anti-regen flag).
+
+Season rules file: all numeric dials adjustable without code.
+
+10) UX & Rules
+
+Owner-only interactions: Buttons/selects/reactions accept input only from the run/card owner.
+
+Crash-safe: Autosave after every action. On restart, automatically DM Resume for any run waiting on a choice.
+
+DM-first training: Rolls can happen in server or DM; training always continues in DMs. If DMs are closed, prompt in server to open them; progress is never lost.
+
+Transparency: Roll displays show per-stat % after COTD (cap noted) and overall Avg % (Tier).
+
+11) Player Lifecycle
+
+Roll (hourly): preview 5–10 candidates with per-stat %s (COTD included, capped).
+
+Choose 1 or Trash All.
+
+Train in DMs: 3 options/turn (mostly regular; events some days), autosave each pick.
+
+Finish: character locks as a Card in collection (cosmetic tier saved).
+
+PvP anytime with locked cards (auto sim + narrated flair).
+
+Repeat each hour for new seeds; collect a roster.
+
+12) Content Authoring Guidelines
+
+Keep regular trainings short, focused (2 stats max per option).
+
+Use primary_tag for variety control (speed, control, rest, risk, shop, etc.).
+
+Events should feel meaningful—bigger swings, unique flavor, sometimes risk (injury, notoriety) with proportionate rewards (items, unlocks).
+
+Items should unlock counters to strong abilities (seal, anti-regen, mirror/reflect, stun) and subtle edges (+pp to Will checks).
+
+Quests deliver identity: a 2–4 stage arc per character per season, ending with a unlock/item that matters in PvP.
+
+13) Economy (Optional, Simple)
+
+Coins earned from trainings/events; spent in shops.
+
+Per-run stock for rare items to gate power (e.g., 1 Mirror Cloak per run).
+
+Keep economy light—main loop is progression, not grinding.
+
+14) Seasons
+
+All live content sits under a Season (e.g., 2025S1): config, character bases, training/events, shops/items, PvP balance.
+
+New season = duplicate folder + tweak numbers/content. Old cards retain their season tag (for ladders or nostalgia modes later).
+
+15) Anti-Abuse & Fairness
+
+Enforce hourly cooldown strictly per user.
+
+Owner-only inputs (reject/ignore others).
+
+Batch expiry (e.g., unchosen roll sets expire after ~30–60 minutes).
+
+Seeded randomness per user/day/match for reproducibility and auditability.
+
+Draws exist (esp. vs Kyuu without proper counters) to prevent forced wins.
+
+16) MVP Scope (what to build first)
+
+Rolling with per-stat % and COTD +10pp cap 115, tier by average (cosmetic).
+
+DM training with 3 options (regular + event mix), pity logic, shops/items.
+
+Autosave & resume; owner-only interactions.
+
+Locking to card; collection view.
+
+PvP auto-sim with the three marquee abilities (Shimi, Kyuu, Dreymi) and concise narrated flair.
